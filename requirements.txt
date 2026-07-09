@@ -1,0 +1,17 @@
+pandas
+numpy
+requests
+python-dotenv
+scikit-learn
+lazypredict
+xgboost
+lightgbm
+scipy
+ipykernel
+matplotlib
+seaborn
+tqdm
+fastapi
+uvicorn
+pydantic
+streamlit
