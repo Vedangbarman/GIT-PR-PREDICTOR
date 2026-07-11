@@ -1,57 +1,77 @@
-import json, os, math
-from datetime import datetime
+import os
+import json
+import math
 import matplotlib.pyplot as plt
 
+DATA_DIR = "data/raw"
 OUT_DIR = "output/images"
-OUT_FILE = os.path.join(OUT_DIR, "bot_composition.png")
+GROUP_SIZE = 15
 
-results = []
-for owner in sorted(os.listdir("data/raw")):
-    p = os.path.join("data/raw", owner)
-    if not os.path.isdir(p):
-        continue
-    for f in os.listdir(p):
-        if not f.endswith(".json"):
+
+def load_repo_stats(path):
+    d = json.load(open(path, encoding="utf-8"))
+    prs = d.get("pull_requests", [])
+    total = len(prs)
+    bots = sum(1 for pr in prs if pr.get("author") and pr["author"].get("__typename") == "Bot")
+    return total, bots
+
+
+def main():
+    results = []
+    for owner in sorted(os.listdir(DATA_DIR)):
+        p = os.path.join(DATA_DIR, owner)
+        if not os.path.isdir(p):
             continue
-        d = json.load(open(os.path.join(p, f), encoding="utf-8"))
-        prs = d["pull_requests"]
-        merged = [pr for pr in prs if pr["mergedAt"]]
-        if not merged:
-            continue
-        bot_frac = sum(1 for pr in prs if pr["author"] and pr["author"]["__typename"] == "Bot") / len(prs)
-        hrs = sorted((datetime.fromisoformat(pr["mergedAt"].replace("Z", "+00:00")) -
-                      datetime.fromisoformat(pr["createdAt"].replace("Z", "+00:00"))).total_seconds() / 3600
-                     for pr in merged)
-        median_h = hrs[len(hrs) // 2]
-        same_day = sum(h < 24 for h in hrs) / len(hrs)
-        results.append({"name": f"{owner}/{d['repo']}", "bot_frac": bot_frac,
-                         "median_h": median_h, "same_day": same_day})
+        for f in os.listdir(p):
+            if not f.endswith(".json") or f.endswith(".partial.json"):
+                continue
+            total, bots = load_repo_stats(os.path.join(p, f))
+            if total == 0:
+                continue
+            results.append({"name": f"{owner}/{f[:-5]}", "total": total, "bots": bots})
 
-results.sort(key=lambda r: r["bot_frac"], reverse=True)
+    results.sort(key=lambda r: r["bots"] / r["total"], reverse=True)
 
-n = len(results)
-cols = 4
-rows = math.ceil(n / cols)
-fig, axes = plt.subplots(rows, cols, figsize=(cols * 3.4, rows * 4.6))
-axes = axes.flatten()
+    os.makedirs(OUT_DIR, exist_ok=True)
+    n_groups = math.ceil(len(results) / GROUP_SIZE)
 
-for ax, r in zip(axes, results):
-    bot_pct, human_pct = r["bot_frac"], 1 - r["bot_frac"]
-    ax.pie([bot_pct, human_pct], colors=["#d64545", "#4577d6"],
-           autopct=lambda p: f"{p:.0f}%" if p > 3 else "",
-           startangle=90, wedgeprops={"edgecolor": "white", "linewidth": 1})
-    ax.set_title(r["name"], fontsize=9, pad=14)
-    ax.text(0, -1.3, f"median merge: {r['median_h']:.1f}h\n<24h: {r['same_day']:.0%}",
-            ha="center", va="top", fontsize=7.5, color="#444")
+    for g in range(n_groups):
+        chunk = results[g * GROUP_SIZE: (g + 1) * GROUP_SIZE]
+        rows, cols = 3, 5
+        fig, axes = plt.subplots(rows, cols, figsize=(cols * 3.4, rows * 4.8))
+        axes = axes.flatten()
 
-for ax in axes[n:]:
-    ax.axis("off")
+        for ax, r in zip(axes, chunk):
+            bot_n, human_n = r["bots"], r["total"] - r["bots"]
+            explode = (0.12, 0) if bot_n > 0 else (0, 0)
+            ax.pie(
+                [bot_n, human_n],
+                colors=["#d64545", "#4577d6"],
+                explode=explode,
+                autopct=lambda p: f"{p:.0f}%" if p > 3 else "",
+                startangle=90,
+                wedgeprops={"edgecolor": "white", "linewidth": 1.2},
+                textprops={"fontsize": 8.5},
+            )
+            ax.set_title(r["name"], fontsize=9, pad=14)
+            ax.text(0, -1.4, f"{r['bots']}/{r['total']} bot PRs",
+                    ha="center", va="top", fontsize=7.5, color="#444")
 
-fig.legend(["Bot-authored", "Human-authored"], loc="lower center", ncol=2,
-           bbox_to_anchor=(0.5, -0.01), frameon=False, fontsize=10)
-fig.suptitle("PR author composition by repo (sorted by bot share)", fontsize=13, y=0.995)
-plt.subplots_adjust(hspace=0.65, wspace=0.3, top=0.90, bottom=0.05)
+        for ax in axes[len(chunk):]:
+            ax.axis("off")
 
-os.makedirs(OUT_DIR, exist_ok=True)
-plt.savefig(OUT_FILE, dpi=150, bbox_inches="tight")
-print(f"saved {OUT_FILE}")
+        fig.legend(["Bot-authored", "Human-authored"], loc="lower center", ncol=2,
+                    bbox_to_anchor=(0.5, -0.01), frameon=False, fontsize=11)
+        lo, hi = g * GROUP_SIZE + 1, g * GROUP_SIZE + len(chunk)
+        fig.suptitle(f"Bot vs human PR share — repos {lo}-{hi} of {len(results)} (sorted by bot share)",
+                     fontsize=13, y=0.995)
+        plt.subplots_adjust(hspace=0.7, wspace=0.3, top=0.90, bottom=0.07)
+
+        out_file = os.path.join(OUT_DIR, f"bot_composition_group{g + 1}.png")
+        plt.savefig(out_file, dpi=150, bbox_inches="tight")
+        plt.close(fig)
+        print(f"saved {out_file} ({len(chunk)} repos)")
+
+
+if __name__ == "__main__":
+    main()
