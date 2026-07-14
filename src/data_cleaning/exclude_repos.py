@@ -17,6 +17,7 @@ EXCLUSIONS = {
     ("affaan-m", "ECC"): "not_a_software_library",
     ("enzymejs", "enzyme"): "legacy_inactive",
     ("ReactiveCocoa", "ReactiveCocoa"): "legacy_inactive",
+    ("pytorch","pytorch"): "pytorchbot_label_based_merge"
 }
 
 
