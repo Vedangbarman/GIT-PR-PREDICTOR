@@ -1,6 +1,6 @@
 import sqlite3
 
-DB_PATH = "data/raw/pr_timelines.db"
+DB_PATH = "data/raw/SQL FILES/pr_timelines.db"
 
 
 def main():

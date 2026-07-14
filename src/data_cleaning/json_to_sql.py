@@ -2,8 +2,8 @@ import os
 import json
 import sqlite3
 
-DATA_DIR = "data/raw"
-DB_PATH = "data/raw/pr_data.db"
+DATA_DIR = "data/raw/JSON FILES"
+DB_PATH = "data/raw/SQL FILES/pr_data.db"
 
 SCHEMA = """
 DROP TABLE IF EXISTS pr_labels;

@@ -12,8 +12,8 @@ load_dotenv()
 API_URL = "https://api.github.com/graphql"
 TOKEN = os.environ.get("GITHUB_TOKEN")
 
-REPOS_CSV = "data/raw/repo_updated.csv"
-OUT_DIR = "data/raw"
+REPOS_CSV = "data/raw/CSV FILES/repo_updated.csv"
+OUT_DIR = "data/raw/JSON FILES"
 MAX_PAGES = int(sys.argv[1]) if len(sys.argv) > 1 else None 
 MIN_RATE_REMAINING = 100
 PAGE_SLEEP = 0.3

@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Define File Paths
-CSV_PATH = "data/raw/pr_time_distribution.csv"
+CSV_PATH = "data/raw/CSV FILES/pr_time_distribution.csv"
 OUTPUT_DIR = "output/images"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 

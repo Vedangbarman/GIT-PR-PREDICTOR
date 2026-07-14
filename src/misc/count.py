@@ -1,7 +1,7 @@
 import os
 import json
 
-DATA_DIR = "data/raw"
+DATA_DIR = "data/raw/JSON FILES"
 
 
 def main():

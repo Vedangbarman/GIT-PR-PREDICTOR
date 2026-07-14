@@ -3,7 +3,7 @@ import json
 import math
 import matplotlib.pyplot as plt
 
-DATA_DIR = "data/raw"
+DATA_DIR = "data/raw/JSON FILES"
 OUT_DIR = "output/images"
 GROUP_SIZE = 15
 

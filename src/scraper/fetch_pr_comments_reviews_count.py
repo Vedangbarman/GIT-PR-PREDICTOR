@@ -10,8 +10,8 @@ load_dotenv()
 
 API_URL = "https://api.github.com/graphql"
 TOKEN = os.environ.get("GITHUB_TOKEN")
-DB_PATH = "data/raw/pr_data.db"
-OUT_DIR = "data/raw"
+DB_PATH = "data/raw/JSON FILES/pr_data.db"
+OUT_DIR = "data/raw/JSON FILES"
 
 BATCH_SIZE = 20          # PRs per GraphQL request, via aliased sub-queries
 REQUEST_SLEEP = 0.5      # pacing between batched requests

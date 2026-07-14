@@ -4,8 +4,8 @@ import glob
 import sqlite3
 
 RAW_DIR = "data/raw"
-PR_DB = "data/raw/pr_data.db"
-OUT_DB = "data/raw/pr_timelines.db"
+PR_DB = "data/raw/SQL FILES/pr_data.db"
+OUT_DB = "data/raw/SQL FILES/pr_timelines.db"
 
 
 def load_pr_lookup(conn):

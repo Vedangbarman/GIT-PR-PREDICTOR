@@ -1,6 +1,6 @@
 import sqlite3
 
-DB_PATH = "data/raw/pr_data.db"
+DB_PATH = "data/raw/SQL FILES/pr_data.db"
 WIP_KEYWORDS = ["wip", "work in progress", "work-in-progress", "do not merge", "do-not-merge"]
 
 

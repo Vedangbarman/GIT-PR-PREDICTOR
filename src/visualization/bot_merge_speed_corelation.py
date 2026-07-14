@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime
 
-DATA_DIR = "data/raw"
+DATA_DIR = "data/raw/JSON FILES"
 OUT_DIR = "output/images"
 
 POINT_COLOR = "#4577d6"

@@ -1,7 +1,7 @@
 import sqlite3 
 
 
-DB_PATH = "data/raw/pr_data.db"
+DB_PATH = "data/raw/SQL FILES/pr_data.db"
 
 EXCLUSION = {
     ("pytorch","pytorch"): "pytorchbot_label_based_merge"

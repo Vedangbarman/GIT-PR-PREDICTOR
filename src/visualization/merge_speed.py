@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 from datetime import datetime
 
-DATA_DIR = "data/raw"
+DATA_DIR = "data/raw/JSON FILES"
 OUT_DIR = "output/images"
 GROUP_SIZE = 15
 

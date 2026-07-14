@@ -3,7 +3,7 @@ import json
 
 import matplotlib.pyplot as plt
 
-DATA_DIR = "data/raw"
+DATA_DIR = "data/raw/JSON FILES"
 OUT_DIR = "output/images"
 OUT_FILE = os.path.join(OUT_DIR, "open_prs_by_repo.png")
 

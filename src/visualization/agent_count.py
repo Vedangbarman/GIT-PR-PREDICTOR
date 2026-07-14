@@ -4,7 +4,7 @@ from collections import defaultdict
 
 import matplotlib.pyplot as plt
 
-DATA_DIR = "data/raw"
+DATA_DIR = "data/raw/JSON FILES"
 OUT_DIR = "output/images"
 OUT_FILE = os.path.join(OUT_DIR, "ai_pr_distribution.png")
 

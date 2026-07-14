@@ -1,7 +1,7 @@
 import sqlite3
 import csv
 
-DB_PATH = "data/raw/pr_data.db"
+DB_PATH = "data/raw/SQL FILES/pr_data.db"
 
 QUERY = """
     WITH PR_Diffs AS (
