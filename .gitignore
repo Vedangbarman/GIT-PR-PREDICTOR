@@ -2,7 +2,7 @@
 venv/
 .venv/
 .env
-mlruns/
+**/mlruns/
 # Python Cache
 __pycache__/
 *.pyc
