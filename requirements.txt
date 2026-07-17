@@ -16,3 +16,4 @@ uvicorn
 pydantic
 streamlit
 sql
+mlflow
