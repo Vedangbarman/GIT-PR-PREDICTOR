@@ -1,6 +1,7 @@
 from pathlib import Path
 import pickle
-
+import joblib
+from sklearn.ensemble import RandomForestClassifier
 import pandas as pd
 from fastapi import FastAPI, HTTPException
 
@@ -16,7 +17,7 @@ app = FastAPI()
 def load_pickle(path):
     try:
         with open(path, "rb") as f:
-            return pickle.load(f)
+            return joblib.load(f)
     except FileNotFoundError:
         return None
 
