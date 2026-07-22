@@ -5,6 +5,10 @@ services:
       dockerfile: Dockerfile.api
     ports:
       - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
 
   frontend:
     build:
@@ -12,6 +16,8 @@ services:
       dockerfile: Dockerfile.streamlit
     ports:
       - "8501:8501"
+    env_file:                
+      - .env
     environment:
       - API_URL=http://api:8000
       - GITHUB_TOKEN=${GITHUB_TOKEN}

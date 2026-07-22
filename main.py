@@ -8,8 +8,7 @@ from fastapi import FastAPI, HTTPException
 from structure import api_structure
 
 BASE_DIR = Path(__file__).resolve().parent
-MODEL_PATH = BASE_DIR / "output" / "savedmodels" / "rf_pr_bottleneck_model.pkl"
-IMPUTER_PATH = BASE_DIR / "output" / "savedmodels" / "pr_imputer.pkl"
+ARTIFACTS_PATH = BASE_DIR / "output" / "savedmodels" / "rf_pr_bottleneck_model.pkl"
 
 app = FastAPI()
 
@@ -22,8 +21,14 @@ def load_pickle(path):
         return None
 
 
-model = load_pickle(MODEL_PATH)
-imputer = load_pickle(IMPUTER_PATH)
+artifacts = load_pickle(ARTIFACTS_PATH)
+
+if artifacts is not None:
+    model = artifacts.get("model")
+    imputer = artifacts.get("imputer")
+else:
+    model = None
+    imputer = None
 
 # columns the model never actually saw during training (identifiers, not features)
 NON_FEATURE_COLS = ["owner", "name", "author_login", "author_type", "repo_key"]
